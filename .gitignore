@@ -1,0 +1,12 @@
+__pycache__/
+
+venv/
+.env
+
+*.log
+*.pid
+*.seed
+*.lock
+.env
+
+.DS_Store

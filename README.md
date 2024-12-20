@@ -31,7 +31,7 @@ This project is a real-time analytics platform for patient health monitoring and
 ## 📂 Directory Structure
 
 ```plaintext
-healthcare_analytics/
+healthcare-live-analytics/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py            # Flask application entry point

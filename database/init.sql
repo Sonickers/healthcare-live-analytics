@@ -8,3 +8,5 @@ CREATE TABLE patients (
 
 ALTER TABLE patients ADD COLUMN risk_label INT DEFAULT NULL;
 
+ALTER TABLE patients
+ADD CONSTRAINT unique_patient_id UNIQUE (patient_id);

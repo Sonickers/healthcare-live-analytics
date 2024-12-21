@@ -67,3 +67,5 @@ services:
       - "8050:8050"
     depends_on:
       - postgres
+    volumes:
+      - ./backend:/app

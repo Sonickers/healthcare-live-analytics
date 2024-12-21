@@ -34,20 +34,24 @@ This project is a real-time analytics platform for patient health monitoring and
 
 ## 📂 Directory Structure
 
-## 📂 Directory Structure
-
-```plaintext
-healthcare-live-analytics/
+healthcare_analytics/
 ├── backend/
 │   ├── app/
-│   │   ├── main.py            # Flask application entry point
-│   │   └── requirements.txt   # Python dependencies
-│   ├── Dockerfile             # Backend Dockerfile
+│   │   ├── __pycache__/          # Python cache files
+│   │   ├── dashboard.py          # Dash-based visualization dashboard
+│   │   ├── generate_data.py      # Script for generating mock data
+│   │   ├── main.py               # Flask application entry point
+│   │   ├── requirements.txt      # Python dependencies
+│   │   ├── model.pkl             # Trained machine learning model
+│   ├── Dockerfile                # Backend Dockerfile
 ├── database/
-│   └── init.sql               # Database schema initialization
-├── kafka/                     # Placeholder for Kafka configuration
-├── .env                       # Environment variables
-├── docker-compose.yml         # Docker Compose configuration
-├── README.md                  # Documentation for the project
-└── .gitignore                 # Git ignore file
+│   └── init.sql                  # Database schema initialization
+├── kafka/                        # Placeholder for Kafka configurations
+├── scripts/
+│   ├── data_preparation.py       # Script for preparing training data
+│   ├── db.sh                     # Shell script for managing the database
+├── .env                          # Environment variables
+├── .gitignore                    # Git ignore file
+├── docker-compose.yml            # Docker Compose configuration
+└── README.md                     # Documentation for the project
 ```

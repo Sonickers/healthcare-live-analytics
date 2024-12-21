@@ -1,16 +1,16 @@
-import dash
 from dash import dcc, html, Input, Output
+import dash
 import pandas as pd
 from sqlalchemy import create_engine
 import os
 
-# Connect to the database
+# Configure the database connection
 DATABASE_URL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
 engine = create_engine(DATABASE_URL)
 
-# Initialize Dash app
+# Initialize the Dash app
 app = dash.Dash(__name__, title="Healthcare Dashboard")
-server = app.server  # Use Flask server for deployment compatibility
+server = app.server
 
 # Layout for the dashboard
 app.layout = html.Div(
@@ -24,10 +24,8 @@ app.layout = html.Div(
                         {"label": "Risk Distribution", "value": "risk_dist"},
                         {"label": "Heart Rate Trends", "value": "heart_rate_trend"},
                         {"label": "Average Blood Pressure", "value": "avg_bp"},
-                        {"label": "Patient Count by Day", "value": "patient_count"},
-                        {"label": "Heart Rate Distribution", "value": "hr_dist"},
                     ],
-                    value="risk_dist",
+                    value="heart_rate_trend",
                     style={"width": "50%"},
                 )
             ],
@@ -54,26 +52,42 @@ def update_graph(selected_metric):
     data = fetch_data()
     figure = {}
 
-    if selected_metric == "risk_dist":
+    if selected_metric == "heart_rate_trend":
+        # Aggregate daily average heart rate
+        avg_heart_rate = data.groupby(data["created_at"].dt.date)["heart_rate"].mean()
+
+        # Create the figure
+        figure = {
+            "data": [
+                {
+                    "x": avg_heart_rate.index,
+                    "y": avg_heart_rate.values,
+                    "type": "line",
+                    "name": "Average Heart Rate",
+                }
+            ],
+            "layout": {
+                "title": "Daily Average Heart Rate Over Time",
+                "xaxis": {
+                    "title": "Date",
+                    "tickvals": list(
+                        avg_heart_rate.index
+                    ),  # Explicitly specify all dates
+                    "ticktext": [
+                        date.strftime("%b %d") for date in avg_heart_rate.index
+                    ],  # Format dates for better readability
+                    "tickangle": -45,  # Rotate labels for better fit
+                },
+                "yaxis": {"title": "Heart Rate (BPM)"},
+            },
+        }
+
+    elif selected_metric == "risk_dist":
         # Risk Distribution (Bar Chart)
         risk_counts = data["risk_label"].value_counts()
         figure = {
             "data": [{"x": ["Low Risk", "High Risk"], "y": risk_counts, "type": "bar"}],
             "layout": {"title": "Risk Distribution"},
-        }
-
-    elif selected_metric == "heart_rate_trend":
-        # Heart Rate Trends (Line Chart)
-        figure = {
-            "data": [
-                {
-                    "x": data["created_at"],
-                    "y": data["heart_rate"],
-                    "type": "line",
-                    "name": "Heart Rate",
-                }
-            ],
-            "layout": {"title": "Heart Rate Trends Over Time"},
         }
 
     elif selected_metric == "avg_bp":
@@ -88,35 +102,11 @@ def update_graph(selected_metric):
                     "name": "Average Systolic BP",
                 }
             ],
-            "layout": {"title": "Average Blood Pressure Over Time"},
-        }
-
-    elif selected_metric == "patient_count":
-        # Patient Count by Day (Bar Chart)
-        patient_count = data.groupby(data["created_at"].dt.date).size()
-        figure = {
-            "data": [
-                {
-                    "x": patient_count.index,
-                    "y": patient_count.values,
-                    "type": "bar",
-                    "name": "Patient Count",
-                }
-            ],
-            "layout": {"title": "Patient Count by Day"},
-        }
-
-    elif selected_metric == "hr_dist":
-        # Heart Rate Distribution (Histogram)
-        figure = {
-            "data": [
-                {
-                    "x": data["heart_rate"],
-                    "type": "histogram",
-                    "name": "Heart Rate Distribution",
-                }
-            ],
-            "layout": {"title": "Heart Rate Distribution"},
+            "layout": {
+                "title": "Average Blood Pressure Over Time",
+                "xaxis": {"title": "Date"},
+                "yaxis": {"title": "Systolic Blood Pressure (mmHg)"},
+            },
         }
 
     return figure

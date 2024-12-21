@@ -3,7 +3,6 @@
 This project is a real-time analytics platform for patient health monitoring and risk prediction. The platform ingests, processes, and analyzes healthcare data to provide insights such as risk levels, real-time patient metrics, and future predictions for healthcare professionals.
 
 ## 📖 Features
-
 - Data Ingestion: Real-time ingestion of patient data into a PostgreSQL database using Flask and Python.
 - Risk Prediction: Machine learning models to predict patient health risk levels.
 - Metrics Examples:
@@ -21,9 +20,14 @@ This project is a real-time analytics platform for patient health monitoring and
 - Languages: Python, SQL
 - Database: PostgreSQL
 - Libraries:
-  - pandas: For data manipulation.
-  - sqlalchemy: For database interaction.
-  - scikit-learn: For building machine learning models.
+  - `pandas`: For data manipulation.
+  - `sqlalchemy`: For database interaction.
+  - `scikit-learn`: For building machine learning models.
+  - `dash`: For creating interactive dashboards.
+  - `dash-bootstrap-components`: For styling Dash components.
+  - `faker`: For generating mock data.
+  - `numpy`: For numerical computations.
+  - `joblib`: For saving and loading machine learning models.
 - Tools:
   - Docker: For containerized deployment.
   - GitHub: For version control.

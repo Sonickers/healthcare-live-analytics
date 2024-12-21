@@ -34,6 +34,8 @@ This project is a real-time analytics platform for patient health monitoring and
 
 ## 📂 Directory Structure
 
+## 📂 Directory Structure
+
 ```plaintext
 healthcare-live-analytics/
 ├── backend/
